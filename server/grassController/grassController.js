@@ -11,20 +11,20 @@ module.exports = {
       .get(`https://pokeapi.co/api/v2/pokemon/${rand1}`)
       .then(response => {
         pokemonArray.push(response.data)
+        axios
+          .get(`https://pokeapi.co/api/v2/pokemon/${rand2}`)
+          .then(response => {
+            pokemonArray.push(response.data)
+            axios
+              .get(`https://pokeapi.co/api/v2/pokemon/${rand3}`)
+              .then(response => {
+                pokemonArray.push(response.data)
+                res.status(200).send(pokemonArray)
+              })
+              .catch(err => console.log(`failed to get rand3 pokemon ${err}`))
+          })
+          .catch(err => console.log(`failed to get rand2 pokemon ${err}`))
       })
       .catch(err => console.log(`failed to get rand1 pokemon ${err}`))
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${rand2}`)
-      .then(response => {
-        pokemonArray.push(response.data)
-      })
-      .catch(err => console.log(`failed to get rand2 pokemon ${err}`))
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${rand3}`)
-      .then(response => {
-        pokemonArray.push(response.data)
-        res.status(200).send([pokemonArray])
-      })
-      .catch(err => console.log(`failed to get rand3 pokemon ${err}`))
   }
 }

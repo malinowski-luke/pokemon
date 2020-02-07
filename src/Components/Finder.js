@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import Grass from './Grass'
+import axios from 'axios'
+import './Finder.css'
 
 export default class Finder extends Component {
   constructor(props) {
@@ -9,14 +11,25 @@ export default class Finder extends Component {
     }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    axios.get('/api/wild-pokemon').then(res => {
+      this.setState({
+        wildPokemon: res.data
+      })
+    })
+  }
 
   render() {
-    return (
-      <div>
-        Finder.js
-        <Grass />
-      </div>
-    )
+    const { catchPokemonFn } = this.props
+    const pokemonList = this.state.wildPokemon.map(element => {
+      return (
+        <Grass
+          key={element.id}
+          catchPokemonFn={catchPokemonFn}
+          pokemon={element}
+        />
+      )
+    })
+    return <div className='Finder'>{pokemonList}</div>
   }
 }
